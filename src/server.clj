@@ -1,6 +1,7 @@
 (ns server
-  (:require [ring.adapter.jetty :as jetty])
-  (:require [clojure.data.json :as json]))
+  (:require [ring.adapter.jetty :as jetty]
+            [clojure.data.json :as json]
+            [templates :as tpl]))
 
 (def todos (atom '({:id 101 :name "Buy Milk"})))
 
@@ -8,15 +9,15 @@
   (json/read-str json-str :key-fn keyword))
 
 (defn to-json [map-str]
-  (json/write-str map-str :key-fn keyword))
+  (json/write-str map-str))
 
 (defn conj-atom [todo]
   (swap! todos conj todo))
 
 (defn get-todos [request]
   {:status 200
-   :headers {"Content-Type" "application/json; charset=UTF-8"}
-   :body (to-json @todos)})
+   :headers {"Content-Type" "text/html; charset=UTF-8"}
+   :body (tpl/show-todos @todos)})
 
 (defn add-todo [request]
   (conj-atom (to-map (:body request)))
