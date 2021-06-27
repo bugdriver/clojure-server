@@ -8,7 +8,7 @@
              [:tr
               [:th "ID"]
               [:th "NAME"]]
-             (for [todo todos]
+             (for [todo (reverse todos)]
                [:tr
                 [:td (:id todo)]
                 [:td (:name todo)]])]]]))
